@@ -2,14 +2,18 @@ export class ball {
   constructor(x, y, radius, color, width, height) {
     this.x = x;
     this.y = y;
-    this.velocityX = 2;
-    this.velocityY = 2;
+
+    this.velocity = {
+      x: Math.random() * 4 - 1,
+      y: Math.random() * 4 - 1,
+    };
+
     this.containerWidth = width;
     this.containerHeight = height;
     this.radius = radius;
     this.color = color;
+    this.mass = 1;
     this.element = this.createBall();
-    console.log(width);
   }
 
   createBall() {
@@ -26,18 +30,18 @@ export class ball {
   }
 
   moveBall = () => {
-    this.x += this.velocityX;
-    this.y += this.velocityY;
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
 
     this.element.style.left = `${this.x}px`;
     this.element.style.top = `${this.y}px`;
 
     if (this.x + this.radius * 2 >= this.containerWidth || this.x <= 0) {
-      this.velocityX *= -1;
+      this.velocity.x *= -1;
     }
 
     if (this.y + this.radius * 2 >= this.containerHeight || this.y <= 0) {
-      this.velocityY *= -1;
+      this.velocity.y *= -1;
     }
   };
 
@@ -47,21 +51,24 @@ export class ball {
     let x2 = nextBall.x;
     let y2 = nextBall.y;
 
-    let part1 = Math.pow(x2 - x1, 2);
-    let part2 = Math.pow(y2 - y1, 2);
+    //calculating the distance
+    let l1 = Math.pow(x2 - x1, 2);
+    let l2 = Math.pow(y2 - y1, 2);
+    let l3 = l1 + l2;
 
-    let part3 = part1 + part2;
-    let distance = Math.sqrt(part3);
-    console.log("distance", distance);
+    let distance = Math.sqrt(l3);
 
-    let totalRadius = this.radius + nextBall.radius;
-    console.log("radius", totalRadius);
+    let totalRadius = Math.ceil(this.radius) + Math.ceil(nextBall.radius);
 
     if (distance <= totalRadius) {
-      console.log("its colliding");
-      this.velocityX = this.velocityX * -1;
-      this.velocityY = this.velocityY * -1;
+      return true;
     }
 
+    return false;
+  };
+
+  updatecolor = (newColor) => {
+    this.color = newColor;
+    this.element.style.backgroundColor = newColor;
   };
 }
