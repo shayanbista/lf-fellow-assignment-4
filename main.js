@@ -1,5 +1,5 @@
 import { ball } from "./ball.js";
-import { collision } from "./collision.js";
+import { resolveCollision } from "./collision.js";
 
 const width = 1200;
 const height = 600;
@@ -78,27 +78,10 @@ export const collidedColors = [
   "lightkhaki",
 ];
 
-function addBall() {
-  const radius = 7 + Math.random() * 5;
-  const x = Math.random() * (ballField.clientWidth - radius * 2);
-  const y = Math.random() * (ballField.clientHeight - radius * 2);
-  const randomIndex = Math.floor(Math.random() * 20);
-  const color = colors[randomIndex];
-  const newBall = new ball(
-    x,
-    y,
-    radius,
-    color,
-    ballField.clientWidth,
-    ballField.clientHeight
-  );
-  ballField.appendChild(newBall.element);
-}
-
 const balls = [];
 
-for (let i = 0; i < 1; i++) {
-  const radius = 7 + Math.random() * 5;
+for (let i = 0; i < 50; i++) {
+  const radius = 10 + Math.floor(Math.random() * 5);
   const x = Math.random() * (ballField.clientWidth - radius * 2);
   const y = Math.random() * (ballField.clientHeight - radius * 2);
 
@@ -124,7 +107,11 @@ const updateBall = () => {
         index != adjacentBall &&
         balls[index].isColliding(balls[adjacentBall])
       ) {
-        collision(balls[index], balls[adjacentBall]);
+        console.log("collide function is called");
+        resolveCollision(balls[index], balls[adjacentBall]);
+
+        element.moveBall();
+
         const collidingBall = balls[adjacentBall];
         collidingBall.element.style.backgroundColor = collidingBall.color;
       }
@@ -133,11 +120,5 @@ const updateBall = () => {
 
   window.requestAnimationFrame(updateBall);
 };
-window.addEventListener("keypress", (event) => {
-  if (event.key == "a") {
-    console.log("a is pressed");
-    const ball = addBall();
-    balls.push(ball);
-  }
-});
+
 window.requestAnimationFrame(updateBall);
