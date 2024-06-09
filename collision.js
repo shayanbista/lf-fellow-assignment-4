@@ -5,7 +5,7 @@ import { collidedColors } from "./main.js";
 let rotatedX, rotatedY, rotatedVelocity;
 
 // this funciton calculates the angle between two balls
-function getAngleofCollision(current, colliding) {
+function calculateAngleOfCollision(current, colliding) {
   let angle = -Math.atan2(current.y - colliding.y, current.x - colliding.x);
   return angle;
 }
@@ -31,7 +31,7 @@ export function resolveCollision(current, collidingBall) {
   // this condition prevents overlap
   if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
     // calculate the angle of collision
-    let angle = getAngleofCollision(current, collidingBall);
+    let angle = calculateAngleOfCollision(current, collidingBall);
 
     // calling the funciton
     let u1 = rotateVector(current.velocity, angle);
@@ -42,18 +42,18 @@ export function resolveCollision(current, collidingBall) {
     let m2 = collidingBall.mass;
 
     // applying one-dimensional elastic collisions.
-    let rotated_v1 = {
+    let rotatedV1 = {
       x: ((m1 - m2) / (m1 + m2)) * u1.x + ((2 * m2) / (m1 + m2)) * u2.x,
       y: u1.y,
     };
-    let rotated_v2 = {
+    let rotatedV2 = {
       x: ((2 * m1) / (m1 + m2)) * u1.x + ((m2 - m1) / (m1 + m2)) * u2.x,
       y: u2.y,
     };
 
     // rotate the vectors back to original axis.
-    let v1 = rotateVector(rotated_v1, -angle);
-    let v2 = rotateVector(rotated_v2, -angle);
+    let v1 = rotateVector(rotatedV1, -angle);
+    let v2 = rotateVector(rotatedV2, -angle);
 
     // update the velocities
     current.velocity.x = v1.x;
@@ -63,7 +63,7 @@ export function resolveCollision(current, collidingBall) {
     collidingBall.velocity.y = v2.y;
 
     // change the color of colliding ball
-    let randomcolorIndex = Math.floor(Math.random() * 30);
+    let randomcolorIndex = Math.floor(Math.random() * 60);
     collidingBall.color = collidedColors[randomcolorIndex];
     current.color = current[randomcolorIndex];
   }
