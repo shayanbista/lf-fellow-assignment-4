@@ -2,18 +2,15 @@ import { ball } from "./ball.js";
 import { resolveCollision } from "./collision.js";
 
 const width = 1200;
-const height = 600;
+const height = 700;
 
 const ballField = document.getElementById("rectangle");
-console.log(ballField);
 
 ballField.style.width = `${width}px`;
 ballField.style.height = `${height}px`;
 ballField.style.backgroundColor = "black";
 ballField.style.position = "relative";
 ballField.style.border = "1px solid black";
-
-let randomIndex = Math.floor(Math.random() * 20);
 
 // default colors
 const colors = [
@@ -34,70 +31,86 @@ const colors = [
   "lightseagreen",
 ];
 
-// colors after collison
+// new color of the ball after colliding
 export const collidedColors = [
-  "Red",
-  "Blue",
-  "Yellow",
-  "Green",
-  "Orange",
-  "Pink",
-  "Cyan",
-  "Purple",
-  "Magenta",
-  "Turquoise",
-  "Lime",
-  "Teal",
-  "Violet",
-  "Amber",
-  "Indigo",
-  "Lavender",
-  "Maroon",
-  "Gold",
-  "Sky Blue",
-  "Coral",
-  "Olive",
-  "Ruby",
-  "Aqua",
-  "Sapphire",
-  "Fuchsia",
-  "Lemon",
-  "Azure",
-  "Rose",
-  "Tangerine",
-  "Jade",
-  "lightgray",
-  "lightgrey",
-  "lightgoldenrod",
-  "lightpink2",
-  "lightseashell",
-  "lightlavender",
-  "lightmintcream",
-  "lightaliceblue",
-  "lightbeige",
-  "lightkhaki",
+  "aquamarine",
+  "bisque",
+  "blanchedalmond",
+  "cadetblue",
+  "chartreuse",
+  "cornflowerblue",
+  "darkkhaki",
+  "darkorange",
+  "darksalmon",
+  "darkseagreen",
+  "darkturquoise",
+  "hotpink",
+  "khaki",
+  "lavender",
+  "mediumaquamarine",
+  "mediumspringgreen",
+  "mistyrose",
+  "moccasin",
+  "navajowhite",
+  "palegoldenrod",
+  "palegreen",
+  "paleturquoise",
+  "palevioletred",
+  "papayawhip",
+  "peachpuff",
+  "peru",
+  "rosybrown",
+  "sandybrown",
+  "seashell",
+  "springgreen",
+  "thistle",
+  "wheat",
+  "aliceblue",
+  "antiquewhite",
+  "azure",
+  "burlywood",
+  "floralwhite",
+  "gainsboro",
+  "honeydew",
+  "ivory",
+  "lavenderblush",
+  "linen",
+  "oldlace",
+  "plum",
+  "powderblue",
+  "snow",
+  "whitesmoke",
+  "gold",
+  "pink",
+  "red",
+  "orange",
 ];
 
 const balls = [];
 
-for (let i = 0; i < 50; i++) {
-  const radius = 10 + Math.floor(Math.random() * 5);
+let randomNumber = Math.floor(Math.random() * 50);
+let totalBalls = Number(150 + randomNumber);
+
+
+for (let i = 0; i < totalBalls; i++) {
+  // const radius = 10; (use this radius for stress test)
+  const radius = 5 + Math.random() * 10;
   const x = Math.random() * (ballField.clientWidth - radius * 2);
   const y = Math.random() * (ballField.clientHeight - radius * 2);
 
-  const randomIndex = Math.floor(Math.random() * 20);
+  const randomIndex = Math.floor(Math.random() * 12);
   const color = colors[randomIndex];
   balls.push(
     new ball(x, y, radius, color, ballField.clientWidth, ballField.clientHeight)
   );
 }
 
-// appending the ball
+// This adds new ball to the field
 balls.forEach((ballElement) => {
   ballField.appendChild(ballElement.element);
 });
 
-// moving the ball
+// THis part updates the balls to move and checks for collision
 const updateBall = () => {
   balls.forEach((element, index) => {
     element.moveBall();
@@ -107,13 +120,11 @@ const updateBall = () => {
         index != adjacentBall &&
         balls[index].isColliding(balls[adjacentBall])
       ) {
-        console.log("collide function is called");
         resolveCollision(balls[index], balls[adjacentBall]);
-
-        element.moveBall();
-
         const collidingBall = balls[adjacentBall];
+        const currentBall = balls[index];
         collidingBall.element.style.backgroundColor = collidingBall.color;
+        currentBall.element.style.backgroundColor = currentBall.color;
       }
     }
   });
@@ -121,4 +132,5 @@ const updateBall = () => {
   window.requestAnimationFrame(updateBall);
 };
 
+// this refreshes the frames
 window.requestAnimationFrame(updateBall);

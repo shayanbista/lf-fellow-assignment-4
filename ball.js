@@ -4,8 +4,8 @@ export class ball {
     this.y = y;
 
     this.velocity = {
-      x: Math.random() * 4 - 1,
-      y: Math.random() * 4 - 1,
+      x: Math.random() * 4 - 2,
+      y: Math.random() * 4 - 2,
     };
 
     this.containerWidth = width;
@@ -14,8 +14,10 @@ export class ball {
     this.color = color;
     this.mass = 1;
     this.element = this.createBall();
+    this.borderTouchTime = null;
   }
 
+  // to create every instance of vall
   createBall() {
     this.ball = document.createElement("div");
     this.ball.style.position = "absolute";
@@ -29,6 +31,7 @@ export class ball {
     return this.ball;
   }
 
+  // to move the ball
   moveBall = () => {
     this.x += this.velocity.x;
     this.y += this.velocity.y;
@@ -36,12 +39,30 @@ export class ball {
     this.element.style.left = `${this.x}px`;
     this.element.style.top = `${this.y}px`;
 
+    let onBorder = false;
+
     if (this.x + this.radius * 2 >= this.containerWidth || this.x <= 0) {
       this.velocity.x *= -1;
+      onBorder = true;
     }
 
     if (this.y + this.radius * 2 >= this.containerHeight || this.y <= 0) {
       this.velocity.y *= -1;
+      onBorder = true;
+    }
+
+    if (onBorder) {
+      if (this.borderTouchTime === null) {
+        this.borderTouchTime = performance.now();
+      } else {
+        const elapsedTime = (performance.now() - this.borderTouchTime) / 1000;
+        if (elapsedTime > 3) {
+          this.x = 20 + Math.floor(Math.random() * 100);
+          this.y = 30 + Math.floor(Math.random() * 100);
+        }
+      }
+    } else {
+      this.borderTouchTime = null;
     }
   };
 
@@ -51,7 +72,7 @@ export class ball {
     let x2 = nextBall.x;
     let y2 = nextBall.y;
 
-    //calculating the distance
+    //this calculates the distance between the two balls
     let l1 = Math.pow(x2 - x1, 2);
     let l2 = Math.pow(y2 - y1, 2);
     let l3 = l1 + l2;
@@ -60,6 +81,7 @@ export class ball {
 
     let totalRadius = Math.ceil(this.radius) + Math.ceil(nextBall.radius);
 
+    // this checks for collision
     if (distance <= totalRadius) {
       return true;
     }
@@ -67,6 +89,7 @@ export class ball {
     return false;
   };
 
+  // this updates the color
   updatecolor = (newColor) => {
     this.color = newColor;
     this.element.style.backgroundColor = newColor;
