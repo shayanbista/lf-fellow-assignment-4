@@ -51,6 +51,9 @@ export function resolveCollision(current, collidingBall) {
       y: u2.y,
     };
 
+    console.log("v1 rotate", rotatedV1);
+    console.log("v2 rotate", rotatedV2);
+
     // rotate the vectors back to original axis.
     let v1 = rotateVector(rotatedV1, -angle);
     let v2 = rotateVector(rotatedV2, -angle);
@@ -63,7 +66,7 @@ export function resolveCollision(current, collidingBall) {
     collidingBall.velocity.y = v2.y;
 
     // change the color of colliding ball
-    let randomcolorIndex = Math.floor(Math.random() * 60);
+    let randomcolorIndex = Math.floor(Math.random() * 20);
     collidingBall.color = collidedColors[randomcolorIndex];
     current.color = current[randomcolorIndex];
   }
