@@ -12,7 +12,7 @@ export class ball {
     this.containerHeight = height;
     this.radius = radius;
     this.color = color;
-    this.mass = 1;
+    this.mass = radius;
     this.element = this.createBall();
     this.borderTouchTime = null;
   }
