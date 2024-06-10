@@ -58,11 +58,11 @@ export const collidedColors = [
 const balls = [];
 
 let randomNumber = Math.floor(Math.random() * 50);
-let totalBalls = Number(150 + randomNumber);
+let totalBalls = Number(400 + randomNumber);
 
 for (let i = 0; i < totalBalls; i++) {
   // const radius = 10;
-  const radius = 5 + Math.random() * 10;
+  const radius = 5 + Math.random() * 6;
   const x = Math.random() * (ballField.clientWidth - radius * 2);
   const y = Math.random() * (ballField.clientHeight - radius * 2);
 
